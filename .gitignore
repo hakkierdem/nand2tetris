@@ -1,0 +1,7 @@
+tools/
+
+*.log
+*.out
+.DS_Store
+
+*.zip
