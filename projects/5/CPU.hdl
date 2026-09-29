@@ -32,5 +32,52 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-	//// Replace this comment with your code.
+	
+    //Register A
+
+    // Load A for every A-instruction or when a C-instruction targets A ; @21 or D=D+A
+    Not(in=instruction[15], out=isAinstruction);
+    Or(a=isAinstruction, b=instruction[5], out=loadA);
+
+    // Choosing y input ; Register A or Register M
+    Mux16(a=registerA, b=inM, sel=instruction[12], out=ALUy);
+    
+    ALU(x=registerD, y=ALUy, zx=instruction[11], nx=instruction[10], zy=instruction[9], ny=instruction[8], f=instruction[7], no=instruction[6], out=ALUout, out=outM, zr=ALUzr, ng=ALUng);
+
+    // ALU output or A-instruction input
+    Mux16(a=ALUout, b=instruction, sel=isAinstruction, out=inA);
+    ARegister(in=inA, load=loadA, out=registerA, out[0..14]=addressM);
+
+
+    //Register D
+
+    And(a=instruction[15], b=instruction[4], out=loadD);
+
+    DRegister(in=ALUout, load=loadD, out=registerD);
+
+    // Enable memory write when a C-instruction targets M
+
+    And(a=instruction[15], b=instruction[3], out=writeM);
+
+    // Program Counter and jump control
+
+    // Classify the ALU result as positive, zero, or negative
+    Not(in=ALUng, out=notALUng);
+    Not(in=ALUzr, out=notALUzr);
+    And(a=notALUng, b=notALUzr, out=isPositive);
+
+    // Check whether the jump field enables the current ALU result category
+    And(a=isPositive, b=instruction[0], out=jumpPositive);
+    And(a=ALUzr, b=instruction[1], out=jumpZero);
+    And(a=ALUng, b=instruction[2], out=jumpNegative);
+
+    // Request a jump when any enabled result category matches
+    Or(a=jumpPositive, b=jumpZero, out=jumpOr);
+    Or(a=jumpNegative, b=jumpOr, out=jumpCondition);
+
+    // Only a C-instruction may cause a jump
+    And(a=jumpCondition, b=instruction[15], out=loadPC);
+
+    // Load the jump target from A; otherwise advance to the next instruction
+    PC(in=registerA, load=loadPC, inc=true, reset=reset, out[0..14]=pc);
 }

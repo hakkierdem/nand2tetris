@@ -25,7 +25,6 @@ CHIP Memory {
     OUT out[16];
 
     PARTS:
-	//// Replace this comment with your code.
     DMux4Way(in=load, sel=address[13..14], a=load0, b=load1, c=load2, d=load3);
     Or(a=load0, b=load1, out=loadRAM);
     
