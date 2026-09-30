@@ -35,7 +35,7 @@ CHIP CPU {
 	
     //Register A
 
-    // Load A for every A-instruction or when a C-instruction targets A ; @21 or D=D+A
+    // Load A for every A-instruction or when a C-instruction targets A ; @21 or A=D+1
     Not(in=instruction[15], out=isAinstruction);
     Or(a=isAinstruction, b=instruction[5], out=loadA);
 
