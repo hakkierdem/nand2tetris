@@ -33,6 +33,224 @@ with input_path.open(encoding="utf-8") as source, \
                     "M=M+1\n"
                 )
 
+            if(parts[1] == "local"):
+
+                output.write(
+                    f"@{parts[2]}\n"
+                    "D=A\n"
+
+                    "@LCL\n"
+                    "A=D+M\n"
+                    "D=M\n"
+
+                    "@SP\n"
+                    "A=M\n"
+                    "M=D\n"
+
+                    "@SP\n"
+                    "M=M+1\n"
+                )
+                
+
+            if(parts[1] == "argument"):
+
+                output.write(
+                    f"@{parts[2]}\n"
+                    "D=A\n"
+
+                    "@ARG\n"
+                    "A=D+M\n"
+                    "D=M\n"
+
+                    "@SP\n"
+                    "A=M\n"
+                    "M=D\n"
+
+                    "@SP\n"
+                    "M=M+1\n"
+                )
+
+            if(parts[1] == "this"):
+
+                output.write(
+                    f"@{parts[2]}\n"
+                    "D=A\n"
+
+                    "@THIS\n"
+                    "A=D+M\n"
+                    "D=M\n"
+
+                    "@SP\n"
+                    "A=M\n"
+                    "M=D\n"
+
+                    "@SP\n"
+                    "M=M+1\n"
+                )
+
+            if(parts[1] == "that"):
+                
+                output.write(
+                    f"@{parts[2]}\n"
+                    "D=A\n"
+
+                    "@THAT\n"
+                    "A=D+M\n"
+                    "D=M\n"
+
+                    "@SP\n"
+                    "A=M\n"
+                    "M=D\n"
+
+                    "@SP\n"
+                    "M=M+1\n"
+                )
+
+            if(parts[1] == "temp"):
+
+                output.write(
+                    f"@{parts[2]}\n"
+                    "D=A\n"
+
+                    "@R5\n"
+                    "A=D+A\n"
+                    "D=M\n"
+
+                    "@SP\n"
+                    "A=M\n"
+                    "M=D\n"
+
+                    "@SP\n"
+                    "M=M+1\n"
+                )
+
+
+        if(parts[0] == "pop"):
+
+            if(parts[1] == "local"):
+
+                output.write(
+                    f"@{parts[2]}\n"
+                    "D=A\n"
+
+                    "@LCL\n"
+                    "M=D+M\n"
+
+                    "@SP\n"
+                    "A=M-1\n"
+                    "D=M\n"
+
+                    "@LCL\n"
+                    "A=M\n"
+                    "M=D\n"
+
+                    f"@{parts[2]}\n"
+                    "D=A\n"                    
+
+                    "@LCL\n"
+                    "M=M-D\n"
+
+                    "@SP\n"
+                    "M=M-1\n"
+                )
+
+            if(parts[1] == "argument"):
+
+                output.write(
+                    f"@{parts[2]}\n"
+                    "D=A\n"
+
+                    "@ARG\n"
+                    "M=D+M\n"
+
+                    "@SP\n"
+                    "A=M-1\n"
+                    "D=M\n"
+
+                    "@ARG\n"
+                    "A=M\n"
+                    "M=D\n"
+
+                    f"@{parts[2]}\n"
+                    "D=A\n"                    
+
+                    "@ARG\n"
+                    "M=M-D\n"
+
+                    "@SP\n"
+                    "M=M-1\n"
+                )
+
+            if(parts[1] == "this"):
+
+                output.write(
+                    f"@{parts[2]}\n"
+                    "D=A\n"
+
+                    "@THIS\n"
+                    "M=D+M\n"
+
+                    "@SP\n"
+                    "A=M-1\n"
+                    "D=M\n"
+
+                    "@THIS\n"
+                    "A=M\n"
+                    "M=D\n"
+
+                    f"@{parts[2]}\n"
+                    "D=A\n"                    
+
+                    "@THIS\n"
+                    "M=M-D\n"
+
+                    "@SP\n"
+                    "M=M-1\n"
+                )
+
+            if(parts[1] == "that"):
+
+                output.write(
+                    f"@{parts[2]}\n"
+                    "D=A\n"
+
+                    "@THAT\n"
+                    "M=D+M\n"
+
+                    "@SP\n"
+                    "A=M-1\n"
+                    "D=M\n"
+
+                    "@THAT\n"
+                    "A=M\n"
+                    "M=D\n"
+
+                    f"@{parts[2]}\n"
+                    "D=A\n"                    
+
+                    "@THAT\n"
+                    "M=M-D\n"
+
+                    "@SP\n"
+                    "M=M-1\n"
+                )
+
+            if(parts[1] == "temp"):
+
+                target = 5 + int(parts[2])
+
+                output.write(
+                    "@SP\n"
+                    "A=M-1\n"
+                    "D=M\n"
+
+                    f"@R{target}\n"
+                    "M=D\n"
+                    
+                    "@SP\n"
+                    "M=M-1\n"
+                )
+
         if(parts[0] == "add"):
 
             output.write(
