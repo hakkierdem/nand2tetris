@@ -154,6 +154,22 @@ with input_path.open(encoding="utf-8") as source, \
                         "M=M+1\n"
                     )
 
+            if(parts[1] == "static"):
+                
+                file_name = input_path.stem
+                index = parts[2]
+
+                output.write(
+                    f"@{file_name}.{index}\n"
+                    "D=M\n"
+
+                    "@SP\n"
+                    "A=M\n"
+                    "M=D\n"
+
+                    "@SP\n"
+                    "M=M+1\n"
+                )
 
         if(parts[0] == "pop"):
 
@@ -310,6 +326,23 @@ with input_path.open(encoding="utf-8") as source, \
                         "@SP\n"
                         "M=M-1\n"
                     )
+            
+            if(parts[1] == "static"):
+                
+                file_name = input_path.stem
+                index = parts[2]
+
+                output.write(
+                    "@SP\n"
+                    "A=M-1\n"
+                    "D=M\n"
+
+                    f"@{file_name}.{index}\n"
+                    "M=D\n"
+
+                    "@SP\n"
+                    "M=M-1\n"
+                )
                                         
         if(parts[0] == "add"):
 
