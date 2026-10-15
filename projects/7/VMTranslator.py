@@ -124,6 +124,36 @@ with input_path.open(encoding="utf-8") as source, \
                     "M=M+1\n"
                 )
 
+            if(parts[1] == "pointer"):
+
+                if(parts[2] == "0"):
+                    
+                    output.write(
+                        "@THIS\n"
+                        "D=M\n"
+
+                        "@SP\n"
+                        "A=M\n"
+                        "M=D\n"
+
+                        "@SP\n"
+                        "M=M+1\n"
+                    )
+                
+                else:
+
+                    output.write(
+                        "@THAT\n"
+                        "D=M\n"
+
+                        "@SP\n"
+                        "A=M\n"
+                        "M=D\n"
+
+                        "@SP\n"
+                        "M=M+1\n"
+                    )
+
 
         if(parts[0] == "pop"):
 
@@ -251,6 +281,36 @@ with input_path.open(encoding="utf-8") as source, \
                     "M=M-1\n"
                 )
 
+            if(parts[1] == "pointer"):
+
+                if(parts[2] == "0"):
+
+                    output.write(
+                        "@SP\n"
+                        "A=M-1\n"
+                        "D=M\n"
+
+                        "@THIS\n"
+                        "M=D\n"
+
+                        "@SP\n"
+                        "M=M-1\n"
+                    )
+
+                else:
+
+                    output.write(
+                        "@SP\n"
+                        "A=M-1\n"
+                        "D=M\n"
+
+                        "@THAT\n"
+                        "M=D\n"
+
+                        "@SP\n"
+                        "M=M-1\n"
+                    )
+                                        
         if(parts[0] == "add"):
 
             output.write(
