@@ -607,3 +607,77 @@ with input_path.open(encoding="utf-8") as source, \
                 f"@{parts[1]}\n"
                 "0;JMP\n"
             )
+
+        if(parts[0] == "function"):
+            
+            output.write(
+                f"({parts[1]})\n"
+            )
+            
+            for i in range(int(parts[2])):
+                output.write(
+                    "@SP\n"
+                    "A=M\n"
+                    "M=0\n"
+                    "@SP\n"
+                    "M=M+1\n"
+                )
+
+        if(parts[0] == "return"):
+
+            output.write(
+                "@5\n"
+                "D=A\n"
+
+                "@LCL\n"
+                "A=M-D\n"
+                "D=M\n"
+
+                "@R14\n"
+                "M=D\n"     
+                
+                "@SP\n"
+                "A=M-1\n"
+                "D=M\n"
+
+                "@ARG\n"
+                "A=M\n"
+                "M=D\n"
+
+                "@ARG\n"
+                "D=M+1\n"
+                "@SP\n"
+                "M=D\n"
+
+                "@LCL\n"
+                "M=M-1\n"
+                "A=M\n"
+                "D=M\n"
+                "@THAT\n"
+                "M=D\n"
+
+                "@LCL\n"
+                "M=M-1\n"
+                "A=M\n"
+                "D=M\n"
+                "@THIS\n"
+                "M=D\n"                
+
+                "@LCL\n"
+                "M=M-1\n"
+                "A=M\n"
+                "D=M\n"
+                "@ARG\n"
+                "M=D\n"
+
+                "@LCL\n"
+                "M=M-1\n"
+                "A=M\n"
+                "D=M\n"
+                "@LCL\n"
+                "M=D\n"
+
+                "@R14\n"
+                "A=M\n"
+                "0;JMP\n"
+            )
