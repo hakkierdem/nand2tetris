@@ -595,9 +595,15 @@ with input_path.open(encoding="utf-8") as source, \
                 "D;JNE\n"
             )
 
-
         if(parts[0] == "label"):
 
             output.write(
                 f"({parts[1]})\n"
+            )
+
+        if(parts[0] == "goto"):
+
+            output.write(
+                f"@{parts[1]}\n"
+                "0;JMP\n"
             )
