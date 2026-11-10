@@ -11,6 +11,8 @@ with input_path.open(encoding="utf-8") as source, \
     eq_counter = 0
     gt_counter = 0
     lt_counter = 0
+
+    return_counter = 0
     
     for raw_line in source:
         line = raw_line.split("//", 1)[0].strip()
@@ -681,3 +683,66 @@ with input_path.open(encoding="utf-8") as source, \
                 "A=M\n"
                 "0;JMP\n"
             )
+
+        if(parts[0] == "call"):
+
+            callee_arg = 5+int(parts[2])
+
+            output.write(
+                f"@RETURN_{return_counter}\n"
+                "D=A\n"
+                "@SP\n"
+                "A=M\n"
+                "M=D\n"
+                "@SP\n"
+                "M=M+1\n"
+                
+                "@LCL\n"
+                "D=M\n"
+                "@SP\n"
+                "A=M\n"
+                "M=D\n"
+                "@SP\n"
+                "M=M+1\n"
+
+                "@ARG\n"
+                "D=M\n"
+                "@SP\n"
+                "A=M\n"
+                "M=D\n"
+                "@SP\n"
+                "M=M+1\n"
+                
+                "@THIS\n"
+                "D=M\n"
+                "@SP\n"
+                "A=M\n"
+                "M=D\n"
+                "@SP\n"
+                "M=M+1\n"
+
+                "@THAT\n"
+                "D=M\n"
+                "@SP\n"
+                "A=M\n"
+                "M=D\n"
+                "@SP\n"
+                "M=M+1\n"
+            
+                f"@{callee_arg}\n"
+                "D=A\n"
+                "@SP\n"
+                "D=M-D\n"
+                "@ARG\n"
+                "M=D\n"
+
+                "@SP\n"
+                "D=M\n"
+                "@LCL\n"
+                "M=D\n"
+
+                f"@{parts[1]}\n"
+                "0;JMP\n"
+                f"(RETURN_{return_counter})\n"
+            )
+            return_counter += 1
